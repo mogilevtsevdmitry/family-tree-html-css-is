@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Семейное дерево</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <a class="brand" href="#">
+          <span class="brand__icon" aria-hidden="true">🌳</span>
+          <span class="brand__text">Семейное дерево</span>
+        </a>
+
+        <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+          <span class="burger__bar"></span>
+          <span class="burger__bar"></span>
+          <span class="burger__bar"></span>
+        </button>
+
+        <nav class="nav" id="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="#">Главная</a>
+          <a class="nav__link" href="#">Профиль</a>
+          <a class="nav__link" href="#">О проекте</a>
+        </nav>
+      </header>
+
+      <main class="app-main">
+        <div class="canvas" id="canvas" aria-label="Полотно дерева">
+          <div class="viewport" id="viewport"></div>
+          <button id="centerBtn" class="center-btn" type="button" title="Центрировать">⟲</button>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <span>© <span id="year"></span> Семейное дерево</span>
+      </footer>
+    </div>
+
+    <script src="./js/canvas.js"></script>
+    <script src="./js/card.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
