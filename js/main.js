@@ -54,10 +54,10 @@ function addDefaultCard() {
   const me = {
     firstName: 'Дмитрий',
     lastName: 'Могилевцев',
-    // patronymic: 'Александрович',
-    // birthDate: '25.03.1991',
-    // deathDate: '',
-    // photoUrl: '.../avatar.jpg',
+    patronymic: 'Александрович',
+    birthDate: '25.03.1991',
+    deathDate: '',
+    photoUrl: '../assets/me.jpg',
     badge: 'Я',
   };
   const card = window.PersonCard.createPersonCard(me);

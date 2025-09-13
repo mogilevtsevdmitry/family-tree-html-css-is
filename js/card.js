@@ -10,8 +10,8 @@
     const hasBirth = !!birthDate;
     const hasDeath = !!deathDate;
     if (!hasBirth && !hasDeath) return '';
-    if (hasBirth && !hasDeath) return `${birthDate} — `;
-    if (!hasBirth && hasDeath) return `— ${deathDate}`;
+    if (hasBirth && !hasDeath) return `${birthDate}`;
+    if (!hasBirth && hasDeath) return `${deathDate}`;
     return `${birthDate} — ${deathDate}`;
   }
 

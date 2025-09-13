@@ -11,7 +11,7 @@
   --pad-lg: 24px;
   --pad-md: 16px;
   --pad-sm: 12px;
-  --maxw: 1100px;
+  --maxw: 1800px;
 }
 
 * { box-sizing: border-box; }
@@ -109,14 +109,14 @@ img { max-width: 100%; display: block; }
 .app-main{
   max-width: var(--maxw);
   width: calc(100% - 24px);
-  margin: 18px auto 24px;
-  padding: 0 var(--pad-lg);
+  margin: 18px auto;
+  /* padding: 0 var(--pad-lg); */
 }
 
 /* === Полотно с панорамированием/масштабом === */
 .canvas{
   position: relative;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 190px);
   min-height: 420px;
   background: linear-gradient(180deg, #ffffff, #fafbff);
   border: 1px solid var(--border);
