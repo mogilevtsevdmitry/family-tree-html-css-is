@@ -1,8 +1,12 @@
+import FamilyData from "./data";
+import { createPersonCard } from "./card";
+import { addToViewport, initCanvas } from "./canvas";
+
 // main.js
 const SELECTORS = {
-  year: '#year',
-  burger: '#burger',
-  nav: '#nav',
+  year: "#year",
+  burger: "#burger",
+  nav: "#nav",
 };
 
 function $(selector) {
@@ -15,27 +19,27 @@ function setCurrentYear() {
 }
 
 function bindBurgerClick(burger, nav) {
-  burger.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('nav--open');
-    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  burger.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("nav--open");
+    burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 }
 
 function bindOutsideClick(burger, nav) {
-  document.addEventListener('click', (e) => {
+  document.addEventListener("click", (e) => {
     const clickInside = nav.contains(e.target) || burger.contains(e.target);
-    if (!clickInside && nav.classList.contains('nav--open')) {
-      nav.classList.remove('nav--open');
-      burger.setAttribute('aria-expanded', 'false');
+    if (!clickInside && nav.classList.contains("nav--open")) {
+      nav.classList.remove("nav--open");
+      burger.setAttribute("aria-expanded", "false");
     }
   });
 }
 
 function bindResizeClose(burger, nav) {
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 720 && nav.classList.contains('nav--open')) {
-      nav.classList.remove('nav--open');
-      burger.setAttribute('aria-expanded', 'false');
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720 && nav.classList.contains("nav--open")) {
+      nav.classList.remove("nav--open");
+      burger.setAttribute("aria-expanded", "false");
     }
   });
 }
@@ -51,23 +55,21 @@ function initBurgerMenu() {
 }
 
 function addDefaultCard() {
-  const me = {
-    firstName: 'Дмитрий',
-    lastName: 'Могилевцев',
-    patronymic: 'Александрович',
-    birthDate: '25.03.1991',
-    deathDate: '',
-    photoUrl: '../assets/me.jpg',
-    badge: 'Я',
+  // Используем FamilyData при желании; пока просто дефолт вокруг (0,0)
+  const users = FamilyData.users;
+  const me = users.find((u) => u.id === 1) || {
+    firstName: "Имя",
+    lastName: "Фамилия",
+    badge: "Я",
   };
-  const card = window.PersonCard.createPersonCard(me);
-  window.CanvasAPI.addToViewport(card, 0, 0);
+  const card = createPersonCard({ ...me, badge: "Я" });
+  addToViewport(card, 0, 0);
 }
 
 function main() {
   setCurrentYear();
   initBurgerMenu();
-  window.CanvasAPI.initCanvas();
+  initCanvas();
   addDefaultCard();
 }
 
