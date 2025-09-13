@@ -110,7 +110,6 @@ img { max-width: 100%; display: block; }
   max-width: var(--maxw);
   width: calc(100% - 24px);
   margin: 18px auto;
-  /* padding: 0 var(--pad-lg); */
 }
 
 /* === Полотно с панорамированием/масштабом === */
