@@ -11,6 +11,9 @@
     isPanning: false,
     startX: 0,
     startY: 0,
+    pinchStartDist: 0,
+    pinchStartScale: 1,
+    pinchStartCenter: { x: 0, y: 0 },
   };
 
   let els = {
@@ -60,34 +63,67 @@
   }
 
   // === Bindings ===
-  function bindPanning() {
+  function bindGestures() {
+    const pointers = new Map();
+
     els.canvas.addEventListener('pointerdown', (e) => {
       if (e.button !== 0) return;
       if (e.target.closest('.person-card') || e.target.closest('.center-btn')) return;
 
       els.canvas.setPointerCapture(e.pointerId);
-      state.isPanning = true;
-      state.startX = e.clientX - state.x;
-      state.startY = e.clientY - state.y;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pointers.size === 1) {
+        state.isPanning = true;
+        state.startX = e.clientX - state.x;
+        state.startY = e.clientY - state.y;
+      } else if (pointers.size === 2) {
+        state.isPanning = false;
+        const [p1, p2] = Array.from(pointers.values());
+        state.pinchStartDist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        state.pinchStartScale = state.scale;
+        state.pinchStartCenter = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+      }
     });
 
     els.canvas.addEventListener('pointermove', (e) => {
-      if (!state.isPanning) return;
-      state.x = e.clientX - state.startX;
-      state.y = e.clientY - state.startY;
-      applyTransform();
+      if (!pointers.has(e.pointerId)) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pointers.size === 1 && state.isPanning) {
+        state.x = e.clientX - state.startX;
+        state.y = e.clientY - state.startY;
+        applyTransform();
+      } else if (pointers.size === 2) {
+        const [p1, p2] = Array.from(pointers.values());
+        const newDist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        const newCenter = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+        const newScale = state.pinchStartScale * (newDist / state.pinchStartDist);
+        state.x += newCenter.x - state.pinchStartCenter.x;
+        state.y += newCenter.y - state.pinchStartCenter.y;
+        state.pinchStartCenter = newCenter;
+        setScale(newScale, newCenter.x, newCenter.y);
+      }
     });
 
-    els.canvas.addEventListener('pointerup', (e) => {
+    function endPointer(e) {
+      pointers.delete(e.pointerId);
+      if (pointers.size === 0) {
+        state.isPanning = false;
+      } else if (pointers.size === 1) {
+        const remaining = Array.from(pointers.values())[0];
+        state.isPanning = true;
+        state.startX = remaining.x - state.x;
+        state.startY = remaining.y - state.y;
+      }
       if (els.canvas.hasPointerCapture && els.canvas.hasPointerCapture(e.pointerId)) {
         els.canvas.releasePointerCapture(e.pointerId);
       }
-      state.isPanning = false;
-    });
+    }
 
-    els.canvas.addEventListener('pointerleave', () => {
-      state.isPanning = false;
-    });
+    els.canvas.addEventListener('pointerup', endPointer);
+    els.canvas.addEventListener('pointercancel', endPointer);
+    els.canvas.addEventListener('pointerleave', endPointer);
   }
 
   function bindWheelZoom() {
@@ -115,7 +151,7 @@
     if (!els.canvas || !els.viewport || !els.centerBtn) return;
 
     centerViewport();
-    bindPanning();
+    bindGestures();
     bindWheelZoom();
     bindCenterButton();
   }
