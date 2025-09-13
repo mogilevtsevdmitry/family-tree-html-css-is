@@ -124,6 +124,7 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow);
   overflow: hidden;
   padding: 0;
+  touch-action: none;
 }
 
 .viewport{
@@ -229,6 +230,10 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 720px){
+  .app-main{
+    margin: 12px;
+    padding: 0;
+  }
   .brand__text{ font-size: 15px; }
   .burger{ display: inline-flex; }
   .nav{
