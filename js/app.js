@@ -1,13 +1,13 @@
 // js/app.js (ESM entry)
-import FamilyData from './data.js';
-import { layoutFamily } from './services/layoutService.js';
-import CanvasAPI from './canvas.js'
-import PersonCard from './card.js'
+import FamilyData from "./data.js";
+import { layoutFamily } from "./services/layoutService.js";
+import CanvasAPI from "./canvas.js";
+import PersonCard from "./card.js";
 
 function renderCards(nodes) {
-  const viewport = document.getElementById('viewport');
+  const viewport = document.getElementById("viewport");
   if (!viewport) return;
-  viewport.innerHTML = '';
+  viewport.innerHTML = "";
 
   for (const n of nodes) {
     const card = PersonCard.createPersonCard({
@@ -17,40 +17,40 @@ function renderCards(nodes) {
       birthDate: n.birthDate,
       deathDate: n.deathDate,
       photoUrl: n.photoUrl,
-      badge: n.id === 1 ? 'Я' : (n.badge || ''),
+      badge: n.id === 1 ? "Я" : n.badge || "",
     });
     CanvasAPI.addToViewport(card, n.x, n.y);
   }
 }
 
 function initHeaderBurger() {
-  const burger = document.getElementById('burger');
-  const nav = document.getElementById('nav');
+  const burger = document.getElementById("burger");
+  const nav = document.getElementById("nav");
   if (!burger || !nav) return;
 
-  burger.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('nav--open');
-    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  burger.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("nav--open");
+    burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener("click", (e) => {
     const clickInside = nav.contains(e.target) || burger.contains(e.target);
-    if (!clickInside && nav.classList.contains('nav--open')) {
-      nav.classList.remove('nav--open');
-      burger.setAttribute('aria-expanded', 'false');
+    if (!clickInside && nav.classList.contains("nav--open")) {
+      nav.classList.remove("nav--open");
+      burger.setAttribute("aria-expanded", "false");
     }
   });
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 720 && nav.classList.contains('nav--open')) {
-      nav.classList.remove('nav--open');
-      burger.setAttribute('aria-expanded', 'false');
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720 && nav.classList.contains("nav--open")) {
+      nav.classList.remove("nav--open");
+      burger.setAttribute("aria-expanded", "false");
     }
   });
 }
 
 function setYear() {
-  const el = document.getElementById('year');
+  const el = document.getElementById("year");
   if (el) el.textContent = new Date().getFullYear();
 }
 
@@ -62,10 +62,10 @@ function main() {
   CanvasAPI.initCanvas();
 
   // Раскладка с union + post-order-подобной привязкой детей к центру родителей и анти-пересечениями
-  const { nodes /*, unions */ } = layoutFamily(FamilyData.users, FamilyData.relations, {
-    rootId: 1,     // Дмитрий как корень
-    levelGap: 180,
-    colGap: 280,
+  const { nodes } = layoutFamily(FamilyData.users, FamilyData.relations, {
+    rootId: 1,
+    levelGap: 310,
+    colGap: 220,
     spouseGap: 80,
   });
 

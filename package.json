@@ -1,0 +1,19 @@
+{
+  "name": "family-tree-html-css-js",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Family tree visualization project",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "node js/test.js"
+  },
+  "keywords": [
+    "family-tree",
+    "visualization",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,3 +1,5 @@
+import { CARD_WITH, CARD_HEIGHT, CARD_SCALE } from "./card.js";
+
 // canvas.js
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 2.5;
@@ -27,10 +29,18 @@ function clampScale(s) {
 }
 
 function centerViewport() {
-  state.x = -120;
-  state.y = -80;
+  // Учитываем масштабирование карточки из CSS
+  const scaledCardWidth = CARD_WITH * CARD_SCALE;
+  const scaledCardHeight = CARD_HEIGHT * CARD_SCALE;
+
+  // Центрируем карточку относительно центра canvas
+  // Отрицательные значения сдвигают viewport влево и вверх
+  state.x = -scaledCardWidth / 2;
+  state.y = -scaledCardHeight / 2;
   state.scale = 1;
   applyTransform();
+  // Обновляем перекрестие после центрирования
+  // drawCrosshair();
 }
 
 function setScale(newScale, pivotClientX = null, pivotClientY = null) {
@@ -111,6 +121,44 @@ function bindCenterButton() {
   });
 }
 
+function drawCrosshair() {
+  // Создаем элемент для перекрестия, если его еще нет
+  let crosshair = document.getElementById("crosshair");
+  if (!crosshair) {
+    crosshair = document.createElement("div");
+    crosshair.id = "crosshair";
+    crosshair.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    `;
+    els.canvas.appendChild(crosshair);
+  }
+
+  // Получаем размеры canvas
+  const rect = els.canvas.getBoundingClientRect();
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  // Создаем SVG для перекрестия
+  const svg = `
+    <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+      <!-- Вертикальная линия -->
+      <line x1="${centerX}" y1="0" x2="${centerX}" y2="${rect.height}" 
+            stroke="#ff6b6b" stroke-width="1" opacity="0.6"/>
+      <!-- Горизонтальная линия -->
+      <line x1="0" y1="${centerY}" x2="${rect.width}" y2="${centerY}" 
+            stroke="#ff6b6b" stroke-width="1" opacity="0.6"/>
+    </svg>
+  `;
+
+  crosshair.innerHTML = svg;
+}
+
 function initCanvas() {
   els.canvas = document.getElementById("canvas");
   els.viewport = document.getElementById("viewport");
@@ -118,9 +166,13 @@ function initCanvas() {
   if (!els.canvas || !els.viewport || !els.centerBtn) return;
 
   centerViewport();
+  // drawCrosshair();
   bindPanning();
   bindWheelZoom();
   bindCenterButton();
+
+  // Обновляем перекрестие при изменении размера окна
+  // window.addEventListener("resize", drawCrosshair);
 }
 
 export default {

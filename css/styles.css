@@ -40,7 +40,7 @@ img { max-width: 100%; display: block; }
   top: 0;
   z-index: 10;
   background: var(--surface);
-  margin: 12px;
+  margin: 12px 12px 0 12px;
   padding: 10px var(--pad-lg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -115,7 +115,7 @@ img { max-width: 100%; display: block; }
 /* === Полотно с панорамированием/масштабом === */
 .canvas{
   position: relative;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 176px);
   min-height: 420px;
   background: linear-gradient(180deg, #ffffff, #fafbff);
   border: 1px solid var(--border);
@@ -154,14 +154,12 @@ img { max-width: 100%; display: block; }
 /* === Карточка человека === */
 .person-card{
   position: absolute;
-  width: 220px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   padding: 16px;
   text-align: center;
-  transform: scale(0.9);
   transform-origin: top left;
 }
 
@@ -201,7 +199,7 @@ img { max-width: 100%; display: block; }
 .person-card__name{
   margin: 0 0 4px;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .person-card__dates{

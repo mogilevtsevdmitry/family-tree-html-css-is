@@ -1,3 +1,7 @@
+export const CARD_WITH = 220;
+export const CARD_HEIGHT = 250;
+export const CARD_SCALE = 0.8;
+
 function makeInitials(firstName = "", lastName = "") {
   const f = firstName.trim()[0] || "";
   const l = lastName.trim()[0] || "";
@@ -8,8 +12,8 @@ function formatDates(birthDate, deathDate) {
   const hasBirth = !!birthDate;
   const hasDeath = !!deathDate;
   if (!hasBirth && !hasDeath) return "";
-  if (hasBirth && !hasDeath) return `${birthDate} — `;
-  if (!hasBirth && hasDeath) return `— ${deathDate}`;
+  if (hasBirth && !hasDeath) return `${birthDate}`;
+  if (!hasBirth && hasDeath) return `${deathDate}`;
   return `${birthDate} — ${deathDate}`;
 }
 
@@ -30,7 +34,9 @@ function createPersonCard(person) {
 
   const root = document.createElement("article");
   root.className = "person-card";
-
+  root.style.width = `${CARD_WITH}px`;
+  root.style.minHeight = `${CARD_HEIGHT}px`;
+  root.style.transform = `scale(${CARD_SCALE})`;
   const badgeEl = document.createElement("div");
   badgeEl.className = "person-card__badge";
   badgeEl.textContent = badge;
